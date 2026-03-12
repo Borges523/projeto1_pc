@@ -6,18 +6,20 @@ import locale
 
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 #ENTRADAS
-capital= float(input('Capital inicial'))
-aporte = float(input('Aporte inicial'))
-meses = int(input('Prazo (meses)'))
-cdi_anual = float(input('CDI anual (%)')) / 100
-perc_cdb = float (input('Percentual do CDI (%)')) /100
-perc_lci = float(input('Percentual do LCI (%)')) / 100
-taxa_fii = float(input('Rentabilidade mensal FII (%)')) / 100
+capital= float(input('Capital inicial:'))
+aporte = float(input('Aporte mensal:'))
+meses = int(input('Prazo (meses):'))
+cdi_anual = float(input('CDI anual (%):')) / 100
+perc_cdb = float (input('Percentual do CDI (%):')) /100
+perc_lci = float(input('Percentual do LCI (%):')) / 100
+taxa_fii = float(input('Rentabilidade mensal FII (%):')) / 100
 meta = float(input('Meta financeira (R$)'))
 
 cdi_mensal = math.pow((1+cdi_anual), 1/12)-1
 #TOTAL INVESTIDO
-total_investido = capital + (aporte * meses)
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+total_investido = capital + (aporte * meses) 
+
 
 #CDB
 taxa_cdb=cdi_mensal*perc_cdb
@@ -58,19 +60,40 @@ data_resgate = data_simulacao + datetime.timedelta(days= meses * 30)
 #META
 meta_atingida = media_fii >= meta
 
+#GRAFICO
+blocos_cdb = int(montante_cdb_liquido / 1000)
+blocos_lci = int(montante_lci / 1000)
+blocos_poupamca = int(montante_poupanca / 1000)
+blocos_fii = int(montante_fii / 1000)
+
+
 #SAIDA
 
-print("\n===== RELATÓRIO DE INVESTIMENTO =====\n")
+print('-' * 40)
+print(" PyInvest Simulador de Investimentos")
+print('=' * 40)
 print(f'data da simulacao:{data_simulacao.strftime("%d/%m/%Y")}')
 print(f'data de resgaste:{data_resgate.strftime("%d/%m/%Y")}')
+print('=' * 40)
+print('       ')
+print(f'total_investido:{locale.currency(total_investido, grouping=True)}')
+print('       ')
+print('--- RESULTADOS FINANCEIROS ---')
 print(f'CDB: {locale.currency(montante_cdb_liquido, grouping=True)}')
+print(f'{'\u2588'* blocos_cdb}')
+print('       ')
 print(f'LCI:{locale.currency(montante_lci, grouping=True)}')
+print(f'{'\u2588'* blocos_lci}')
+print('       ')
 print(f'poupanca:{locale.currency(montante_poupanca, grouping=True)}')
+print(f'{'\u2588'* blocos_poupamca}')
+print('       ')
 print(f'FII(media:{locale.currency(media_fii, grouping=True)}')
+print(f'{'\u2588'* blocos_fii}')
+print('       ')
+print('--- ESTATISTICAS FII ---')
 print(f'mediana:{locale.currency(mediana_fii, grouping=True)}')
 print(f'Desvio_padrao:{locale.currency(dp_fii, grouping=True)}')
+print('       ')
 print(f'Meta atingida?:{media_fii >= meta}')
-
-
-
-
+print('=' * 40)
